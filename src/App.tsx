@@ -1,14 +1,11 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type FormEvent,
-  type ReactNode,
-} from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import profileImage from "./Profile.png";
 import Restaurant from "../src/img/restaurant.svg";
 import fashion from "../src/img/fashion.png";
 import tech from "../src/img/tech.png";
+import Testimonials from "../src/components/testimonials";
+import Reveal from "./components/reveal";
+
 import {
   ArrowUpRight,
   BarChart3,
@@ -35,6 +32,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Route, Switch, useLocation, Router as WouterRouter } from "wouter";
+
 
 const queryClient = new QueryClient();
 
@@ -212,44 +210,6 @@ const benefits: { title: string; copy: string; icon: LucideIcon }[] = [
     icon: ShieldCheck,
   },
 ];
-
-function Reveal({
-  children,
-  className = "",
-  delay = "",
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${delay} ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
 
 function AnchorLink({
   label,
@@ -827,52 +787,7 @@ function WhyWork() {
   );
 }
 
-function Testimonials() {
-  return (
-    <section
-      className="tint-section section-pad"
-      id="testimonials"
-      aria-labelledby="testimonials-heading"
-    >
-      <div className="container-wide">
-        <Reveal>
-          <span className="eyebrow">When genuine feedback is ready</span>
-          <h2 id="testimonials-heading" className="display section-heading">
-            What clients say.
-          </h2>
-        </Reveal>
-        <div className="testimonial-grid" style={{ marginTop: "52px" }}>
-          {[1, 2, 3].map((item, index) => (
-            <Reveal key={item} delay={`reveal-delay-${index}`}>
-              <article
-                className="testimonial-card"
-                data-testid={`card-testimonial-${item}`}
-              >
-                <div>
-                  <div className="quote-mark" aria-hidden="true">
-                    “
-                  </div>
-                  <blockquote>Add genuine client feedback here.</blockquote>
-                </div>
-                <div className="testimonial-author">
-                  <span className="author-avatar" aria-hidden="true">
-                    —
-                  </span>
-                  <span>
-                    Client Name
-                    <br />
-                    <small>Business Name</small>
-                  </span>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
+<Testimonials />
 function CTA() {
   return (
     <section className="cta-band section-pad" aria-labelledby="cta-heading">
